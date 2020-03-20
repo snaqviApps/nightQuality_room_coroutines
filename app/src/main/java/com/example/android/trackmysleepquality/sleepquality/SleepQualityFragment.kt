@@ -57,13 +57,13 @@ class SleepQualityFragment : Fragment() {
         val dataSource = SleepDatabase.getInstance(applicationQuality).sleepDatabaseDao
 
         viewModelQuality_Factory = SleepQualityViewModelFactory(arguments, dataSource)
-        sleepQualityViewModel = ViewModelProvider(this, viewModelQuality_Factory).get(SleepQualityViewModel::class.java)
+        sleepQualityViewModel = ViewModelProvider(this, viewModelQuality_Factory)
+                .get(SleepQualityViewModel::class.java)
         bindingQuality.sleepQualityViewModelView = sleepQualityViewModel
 
         // TODO: Call binding.setLifecycleOwner to make the data binding lifecycle aware:
 //        bindingQuality.lifecycleOwner = this.viewLifecycleOwner   /** 'above Line' */
         bindingQuality.setLifecycleOwner(this)                      /** Alternate approach to 'above Line' */
-
 
 /**
  * using 'default-it'
