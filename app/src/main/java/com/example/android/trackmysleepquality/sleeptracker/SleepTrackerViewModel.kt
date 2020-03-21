@@ -43,7 +43,10 @@ class SleepTrackerViewModel(
     private var tonight = MutableLiveData<SleepNight?>()
 
     //Completed_TODO (04) Define a variable, nights. Then getAllNights() from the databaseDao, and assign to the nights variable.
-    private val nights = databaseDao.getAllNights()
+//    private val nights = databaseDao.getAllNights()
+    val nights = databaseDao.getAllNights()         /** changed access in this 'exercise' */
+
+
     val nightString = Transformations.map(nights){nightsInput ->
         formatNights(nightsInput, application.resources)
     }
