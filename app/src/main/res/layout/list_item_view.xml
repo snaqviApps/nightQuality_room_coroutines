@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:layout_margin="16dp">
 
-
     <ImageView
         android:id="@+id/quality_image"
         android:layout_width="59dp"
@@ -26,9 +25,13 @@
         android:layout_width="0dp"
         android:layout_height="20dp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/quality_image"
         app:layout_constraintEnd_toEndOf="@+id/sleep_length"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/sleep_length"
         app:layout_constraintTop_toBottomOf="@+id/sleep_length"
+        app:layout_constraintVertical_bias="0.296"
         tools:text="Excellent!!!" />
 
     <TextView
@@ -36,9 +39,9 @@
         android:layout_width="0dp"
         android:layout_height="20dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/quality_image"
         app:layout_constraintTop_toTopOf="@+id/quality_image"
         tools:text="Wednesday" />

@@ -4,37 +4,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+
 import android.widget.TextView
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.trackmysleepquality.R
 import com.example.android.trackmysleepquality.convertDurationToFormatted
 import com.example.android.trackmysleepquality.convertNumericQualityToString
 import com.example.android.trackmysleepquality.database.SleepNight
 
-class SleepNightAdapter: RecyclerView.Adapter<SleepNightAdapter.ListViewHolder>() {
-    var data =  listOf<SleepNight>()
-        set(value) {                    /** customer Setter, slower approach to reDraw soon any data update happened*/
-            field = value
-            notifyDataSetChanged()
-        }
-
-    override fun getItemCount(): Int {
-        return data.size
-    }
+//class SleepNightAdapter: RecyclerView.Adapter<SleepNightAdapter.ListViewHolder>() {                          /** Old Implementation */
+/** Provides RecyclerView-Adapter backed by a List */
+class SleepNightAdapter: ListAdapter<SleepNight, SleepNightAdapter.ListViewHolder>(SleepNightDiffCallback()) {
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        val item = data[position]
+        val item = getItem(position)
         holder.bind(item)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
-//        return ListViewHolder.Companion.from(parent)      /** 'Companion' here is redundant, as Kotlin is smart enough to work even without it */
+//        return ListViewHolder.Companion.from(parent)      /** 'Companion' here is redundant, as Kotlin is smart enough to figure that it is a companion Object */
         return ListViewHolder.from(parent)
     }
 
-
-//    class ListViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {                    // Old Implementation
-    /** below added 'private constructor' so it could only be accessed via Companion Object */
+    /** below added key-word 'private constructor' so it could only be accessed via Companion Object */
     class ListViewHolder private constructor(itemView: View): RecyclerView.ViewHolder(itemView) {
         val sleepLength: TextView = itemView.findViewById(R.id.sleep_length)
         val quality: TextView = itemView.findViewById(R.id.quality_string)
@@ -44,7 +37,7 @@ class SleepNightAdapter: RecyclerView.Adapter<SleepNightAdapter.ListViewHolder>(
             /** Another 'Encapsulation' moved to view details from Adapter class
              * so multiple 'ViewHolders' can be created used
              * later
-             *  Now this is an 'Extension function'
+             * Now this is an 'Extension function'
              *
              **/
             val res = itemView.context.resources
@@ -61,9 +54,8 @@ class SleepNightAdapter: RecyclerView.Adapter<SleepNightAdapter.ListViewHolder>(
             })
         }
 
-        /** to create factory like pattern
-         * To do that, private contstructor is needed in ListViewHolder declaration
-         *
+        /** to create factory-pattern
+         * private contstructor is needed in ListViewHolder declaration
          **/
         companion object {
             fun from(parent: ViewGroup): ListViewHolder {
@@ -73,5 +65,9 @@ class SleepNightAdapter: RecyclerView.Adapter<SleepNightAdapter.ListViewHolder>(
             }
         }
     }
-
 }
+
+
+
+
+

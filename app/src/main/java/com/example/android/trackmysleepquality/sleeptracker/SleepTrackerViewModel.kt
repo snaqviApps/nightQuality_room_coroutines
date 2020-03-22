@@ -159,8 +159,6 @@ class SleepTrackerViewModel(
         }
     }
 
-
-
     override fun onCleared() {
         super.onCleared()
         trackerViewModelJob.cancel()        /** cancelling all Coroutines-jobs */
