@@ -155,11 +155,6 @@ fun formatNights(nights: List<SleepNight>, resources: Resources): Spanned {
  */
 
 //class TextItemViewHolder(val textView: TextView): RecyclerView.ViewHolder(textView)       // Old Implementation
-class ItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-    val sleepLength: TextView = itemView.findViewById(R.id.sleep_length)
-    val quality: TextView = itemView.findViewById(R.id.quality_string)
-    val qualityImage: ImageView = itemView.findViewById(R.id.quality_image)
-}
 
 
 
