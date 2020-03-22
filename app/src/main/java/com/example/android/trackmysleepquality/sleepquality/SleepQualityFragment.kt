@@ -37,7 +37,7 @@ import com.example.android.trackmysleepquality.databinding.FragmentSleepQualityB
  * and the database is updated.
  */
 class SleepQualityFragment : Fragment() {
-    private lateinit var viewModelQuality_Factory:SleepQualityViewModelFactory
+    private lateinit var viewModelQualityFactory:SleepQualityViewModelFactory
     private lateinit var sleepQualityViewModel: SleepQualityViewModel
     /**
      * Called when the Fragment is ready to display content to the screen.
@@ -56,8 +56,8 @@ class SleepQualityFragment : Fragment() {
         val arguments = SleepQualityFragmentArgs.fromBundle(arguments!!).sleepNightKey
         val dataSource = SleepDatabase.getInstance(applicationQuality).sleepDatabaseDao
 
-        viewModelQuality_Factory = SleepQualityViewModelFactory(arguments, dataSource)
-        sleepQualityViewModel = ViewModelProvider(this, viewModelQuality_Factory)
+        viewModelQualityFactory = SleepQualityViewModelFactory(arguments, dataSource)
+        sleepQualityViewModel = ViewModelProvider(this, viewModelQualityFactory)
                 .get(SleepQualityViewModel::class.java)
         bindingQuality.sleepQualityViewModelView = sleepQualityViewModel
 
