@@ -3,7 +3,7 @@ package com.example.android.trackmysleepquality.sleeptracker
 /** My resource for the changrs
  *
  * https://classroom.udacity.com/courses/ud9012/lessons/ee5a525f-0ba3-4d25-ba29-1fa1d6c567b8/concepts/f13214fb-2d67-4155-adee-ea7b36458c36
- * 
+ *
  */
 
 import android.view.LayoutInflater
@@ -32,7 +32,7 @@ class SleepNightAdapter: ListAdapter<SleepNight, SleepNightAdapter.ListViewHolde
     class ListViewHolder private constructor(val binding: ListItemViewBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(item: SleepNight) {
             val res = itemView.context.resources
-            binding.sleepLength.text = convertDurationToFormatted(item.startTimeMilli, item.endTimeMilli, res)
+            binding.sleepLength.text = convertDurationToFormatted(item.startTimeMilli, item.endTimeMilli, res)          // inline approach for binding access
             binding.qualityString.text = convertNumericQualityToString(item.sleepQuality, res)
             binding.qualityImage.setImageResource(when (item.sleepQuality) {
                 0 -> R.drawable.ic_sleep_0
