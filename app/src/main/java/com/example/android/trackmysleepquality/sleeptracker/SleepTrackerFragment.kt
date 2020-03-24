@@ -47,7 +47,6 @@ class SleepTrackerFragment : Fragment() {
                 .get(SleepTrackerViewModel::class.java)
         binding.sleepTrackerViewModelView = sleepTrackerViewModel
         binding.lifecycleOwner = this.viewLifecycleOwner
-
         val adapter_UI = SleepNightAdapter()
         binding.sleepList.adapter = adapter_UI
 
