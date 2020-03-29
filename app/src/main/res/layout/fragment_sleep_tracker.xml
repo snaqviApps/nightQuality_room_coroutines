@@ -9,7 +9,7 @@
          click handlers, and state variables. -->
     <data>
         <variable
-            name="sleepTrackerViewModelView"
+            name="sleepTrackerViewModelXML"
             type="com.example.android.trackmysleepquality.sleeptracker.SleepTrackerViewModel" />
     </data>
 
@@ -29,8 +29,8 @@
             app:layout_constraintEnd_toStartOf="@+id/stop_button"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
-            android:enabled="@{sleepTrackerViewModelView.startButtonVisible}"
-            android:onClick="@{()->sleepTrackerViewModelView.onStartTracking()}"
+            android:enabled="@{sleepTrackerViewModelXML.startButtonVisible}"
+            android:onClick="@{()->sleepTrackerViewModelXML.onStartTracking()}"
             />
 
         <Button
@@ -44,8 +44,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/start_button"
             app:layout_constraintTop_toTopOf="parent"
-            android:enabled="@{sleepTrackerViewModelView.stopButtonVisible}"
-            android:onClick="@{()->sleepTrackerViewModelView.onStopTracking()}"
+            android:enabled="@{sleepTrackerViewModelXML.stopButtonVisible}"
+            android:onClick="@{()->sleepTrackerViewModelXML.onStopTracking()}"
             />
 
         <Button
@@ -60,8 +60,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:enabled="@{sleepTrackerViewModelView.clearButtonVisible}"
-            android:onClick="@{()->sleepTrackerViewModelView.onClear()}"
+            android:enabled="@{sleepTrackerViewModelXML.clearButtonVisible}"
+            android:onClick="@{()->sleepTrackerViewModelXML.onClear()}"
             />
 
         <androidx.recyclerview.widget.RecyclerView

@@ -6,14 +6,18 @@
 
     <data>
         <variable
-            name="sleepAdapterView"
+            name="sleepAdapterXML"
             type="com.example.android.trackmysleepquality.database.SleepNight" />
+        <variable
+            name="clickListenerViewXML"
+            type="com.example.android.trackmysleepquality.sleeptracker.SleepNightListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp">
+        android:layout_margin="16dp"
+        android:onClick="@{() -> clickListenerViewXML.onClick(sleepAdapterXML)}">      <!-- making whole layout clickable -->
 
         <ImageView
             android:id="@+id/quality_image"
@@ -28,7 +32,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.135"
-            app:sleepImage="@{sleepAdapterView}"
+            app:sleepImage="@{sleepAdapterXML}"
             app:srcCompat="@drawable/ic_sleep_5" />
 
         <TextView
@@ -41,7 +45,7 @@
             app:layout_constraintStart_toStartOf="@+id/quality_image"
             app:layout_constraintTop_toBottomOf="@+id/quality_image"
             app:layout_constraintVertical_bias="0.02"
-            app:sleepQualityString="@{sleepAdapterView}"
+            app:sleepQualityString="@{sleepAdapterXML}"
             tools:text="Excellent!!!" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

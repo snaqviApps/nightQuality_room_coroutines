@@ -20,6 +20,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -46,9 +47,12 @@ class SleepTrackerFragment : Fragment() {
         val viewModelFactory = SleepTrackerViewModelFactory(dataSource, applicationTracker)
         val sleepTrackerViewModel =  ViewModelProvider(this, viewModelFactory)
                 .get(SleepTrackerViewModel::class.java)
-        binding.sleepTrackerViewModelView = sleepTrackerViewModel
+        binding.sleepTrackerViewModelXML = sleepTrackerViewModel
         binding.lifecycleOwner = this.viewLifecycleOwner
-        val adapter_UI = SleepNightAdapter()
+        val adapter_UI = SleepNightAdapter(SleepNightListener {                                     // modified to handle clicks to views in recyclerView
+//            Toast.makeText(context, "$it", Toast.LENGTH_SHORT).show()
+             nightId -> Toast.makeText(context, "$nightId", Toast.LENGTH_SHORT).show()            // alternate call to above
+        })
         binding.sleepList.adapter = adapter_UI
 
         /** Define GridLayoutManager */
