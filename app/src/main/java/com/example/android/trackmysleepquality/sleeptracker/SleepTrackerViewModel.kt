@@ -69,7 +69,19 @@ class SleepTrackerViewModel(
         _navigateToSleepQuality.value = null
     }
 
-    //Completed_TODO (05) In an init block, initializeTonight(), and implement it to launch a coroutine, to getTonightFromDatabase().
+    private val _navigateToSleepQualityDetails = MutableLiveData<Long>()
+    val navigateToSleepQualityDetails
+    get() = _navigateToSleepQualityDetails
+
+    fun onSleepNightClicked(id: Long){
+        _navigateToSleepQualityDetails.value = id
+    }
+
+    fun onSleepQualityDetailsNavigated(){
+        _navigateToSleepQualityDetails.value = null
+    }
+
+    // TODO (05) In an init block, initializeTonight(), and implement it to launch a coroutine, to getTonightFromDatabase().
     init {
         initializeTonight()
     }

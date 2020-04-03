@@ -49,20 +49,21 @@ class SleepTrackerFragment : Fragment() {
                 .get(SleepTrackerViewModel::class.java)
         binding.sleepTrackerViewModelXML = sleepTrackerViewModel
         binding.lifecycleOwner = this.viewLifecycleOwner
-        val adapter_UI = SleepNightAdapter(SleepNightListener {                                     // modified to handle clicks to views in recyclerView
-//            Toast.makeText(context, "$it", Toast.LENGTH_SHORT).show()
-             nightId -> Toast.makeText(context, "$nightId", Toast.LENGTH_SHORT).show()            // alternate call to above
+
+        val adapterUI = SleepNightAdapter(SleepNightListener { nightId ->                         /** handle clicks to views in recyclerView */
+            nightId.let {
+                sleepTrackerViewModel.onSleepNightClicked(nightId)
+            }
         })
-        binding.sleepList.adapter = adapter_UI
+        binding.sleepList.adapter = adapterUI
 
         /** Define GridLayoutManager */
         val gridManager =  GridLayoutManager(activity, 3)
         binding.sleepList.layoutManager = gridManager
 
-        /** Tells adapter when new data is available */
         sleepTrackerViewModel.nights.observe(this.viewLifecycleOwner, Observer {
             it?.let {
-                adapter_UI.submitList(it)   // Submits a new list to be diffed, and displayed.
+                adapterUI.submitList(it)   // Submits a new list to be diffed, and displayed.
             }
         })
 
@@ -75,6 +76,16 @@ class SleepTrackerFragment : Fragment() {
                 sleepTrackerViewModel.doneNavigating()
             }
         })
+
+//        /** navigate to the SleepQualityDetails Fragment */
+        sleepTrackerViewModel.navigateToSleepQualityDetails.observe(this.viewLifecycleOwner, Observer { nightDetails ->
+            nightDetails?.let {
+                findNavController().navigate(SleepTrackerFragmentDirections
+                        .actionSleepTrackerFragmentToSleepDetailFragment(nightDetails))
+                sleepTrackerViewModel.onSleepQualityDetailsNavigated()
+            }
+        })
+
 
         sleepTrackerViewModel.showSnackbar.observe(this.viewLifecycleOwner, Observer {
             if(it == true){
