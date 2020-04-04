@@ -30,6 +30,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.android.trackmysleepquality.R
 import com.example.android.trackmysleepquality.database.SleepDatabase
 import com.example.android.trackmysleepquality.databinding.FragmentSleepTrackerBinding
+import com.example.android.trackmysleepquality.view.SleepNightAdapter
+import com.example.android.trackmysleepquality.view.SleepNightListener
 import com.google.android.material.snackbar.Snackbar
 
 class SleepTrackerFragment : Fragment() {
@@ -85,7 +87,6 @@ class SleepTrackerFragment : Fragment() {
                 sleepTrackerViewModel.onSleepQualityDetailsNavigated()
             }
         })
-
 
         sleepTrackerViewModel.showSnackbar.observe(this.viewLifecycleOwner, Observer {
             if(it == true){

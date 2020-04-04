@@ -1,4 +1,4 @@
-package com.example.android.trackmysleepquality.sleeptracker
+package com.example.android.trackmysleepquality.view
 
 import android.widget.ImageView
 import android.widget.TextView

@@ -1,4 +1,4 @@
-package com.example.android.trackmysleepquality.sleeptracker
+package com.example.android.trackmysleepquality.view
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.android.trackmysleepquality.database.SleepNight
