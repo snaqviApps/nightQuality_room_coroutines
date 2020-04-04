@@ -20,14 +20,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.android.trackmysleepquality.R
 import com.example.android.trackmysleepquality.database.SleepDatabase
 import com.example.android.trackmysleepquality.databinding.FragmentSleepTrackerBinding
+import com.example.android.trackmysleepquality.view.SleepNightAdapter
+import com.example.android.trackmysleepquality.view.SleepNightListener
 import com.google.android.material.snackbar.Snackbar
 
 class SleepTrackerFragment : Fragment() {
@@ -45,15 +49,23 @@ class SleepTrackerFragment : Fragment() {
         val viewModelFactory = SleepTrackerViewModelFactory(dataSource, applicationTracker)
         val sleepTrackerViewModel =  ViewModelProvider(this, viewModelFactory)
                 .get(SleepTrackerViewModel::class.java)
-        binding.sleepTrackerViewModelView = sleepTrackerViewModel
+        binding.sleepTrackerViewModelXML = sleepTrackerViewModel
         binding.lifecycleOwner = this.viewLifecycleOwner
-        val adapter_UI = SleepNightAdapter()
-        binding.sleepList.adapter = adapter_UI
 
-        /** Tells adapter when new data is available */
+        val adapterUI = SleepNightAdapter(SleepNightListener { nightId ->                         /** handle clicks to views in recyclerView */
+            nightId.let {
+                sleepTrackerViewModel.onSleepNightClicked(nightId)
+            }
+        })
+        binding.sleepList.adapter = adapterUI
+
+        /** Define GridLayoutManager */
+        val gridManager =  GridLayoutManager(activity, 3)
+        binding.sleepList.layoutManager = gridManager
+
         sleepTrackerViewModel.nights.observe(this.viewLifecycleOwner, Observer {
             it?.let {
-                adapter_UI.submitList(it)   // Submits a new list to be diffed, and displayed.
+                adapterUI.submitList(it)   // Submits a new list to be diffed, and displayed.
             }
         })
 
@@ -64,6 +76,15 @@ class SleepTrackerFragment : Fragment() {
                         .actionSleepTrackerFragmentToSleepQualityFragment(nightNav.nightId)
                 findNavController().navigate(actionQuality)
                 sleepTrackerViewModel.doneNavigating()
+            }
+        })
+
+//        /** navigate to the SleepQualityDetails Fragment */
+        sleepTrackerViewModel.navigateToSleepQualityDetails.observe(this.viewLifecycleOwner, Observer { nightDetails ->
+            nightDetails?.let {
+                findNavController().navigate(SleepTrackerFragmentDirections
+                        .actionSleepTrackerFragmentToSleepDetailFragment(nightDetails))
+                sleepTrackerViewModel.onSleepQualityDetailsNavigated()
             }
         })
 

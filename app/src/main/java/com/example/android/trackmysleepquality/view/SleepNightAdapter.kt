@@ -1,6 +1,6 @@
-package com.example.android.trackmysleepquality.sleeptracker
+package com.example.android.trackmysleepquality.view
 
-/** My resource for the changrs
+/** My resource for the changes
  *
  * https://classroom.udacity.com/courses/ud9012/lessons/ee5a525f-0ba3-4d25-ba29-1fa1d6c567b8/concepts/f13214fb-2d67-4155-adee-ea7b36458c36
  *
@@ -14,11 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.android.trackmysleepquality.database.SleepNight
 import com.example.android.trackmysleepquality.databinding.ListItemViewBinding
 
-class SleepNightAdapter: ListAdapter<SleepNight, SleepNightAdapter.ListViewHolder>(SleepNightDiffCallback()) {
+//class SleepNightAdapter: ListAdapter<SleepNight, SleepNightAdapter.ListViewHolder>(SleepNightDiffCallback()) {        // added 'clickListener' to Adapter's constructor
+class SleepNightAdapter(
+        val clickListener: SleepNightListener): ListAdapter<SleepNight, SleepNightAdapter.ListViewHolder>(SleepNightDiffCallback()) {
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        val item = getItem(position)
-        holder.bind(item)
+        holder.bind(getItem(position)!!, clickListener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
@@ -27,11 +28,11 @@ class SleepNightAdapter: ListAdapter<SleepNight, SleepNightAdapter.ListViewHolde
 
     /** below added key-word 'private constructor' so it could only be accessed via Companion Object */
     class ListViewHolder private constructor(val bindingVH: ListItemViewBinding): RecyclerView.ViewHolder(bindingVH.root) {
-        fun bind(item: SleepNight) {
+        fun bind(item: SleepNight, clickListener: SleepNightListener) {
 
-//            TODO("Replace the code in SleepNightAdapter.ViewHolder.bind with a single binding to the SleepNight item, followed by executePendingBindings():")
-            bindingVH.sleepAdapterView = item           // dataBinding variable in list_item_view.xml
-            bindingVH.executePendingBindings()          // expedite the
+            bindingVH.sleepAdapterXML = item                    // dataBinding variable in list_item_view.xml
+            bindingVH.clickListenerViewXML = clickListener      // added binding the onClick-Callback to all ViewHolders from adatper-constructor
+            bindingVH.executePendingBindings()                  // expedite the binding
         }
 
         /** to create factory-pattern
@@ -47,7 +48,22 @@ class SleepNightAdapter: ListAdapter<SleepNight, SleepNightAdapter.ListViewHolde
     }
 }
 
+class SleepNightListener(val clickListener: (sleepId: Long) -> Unit){
+    fun onClick(night: SleepNight) {
+        return clickListener(night.nightId)
+    }
+}
 
+sealed class DataItem{
+    data class SleepNightItem(val sleepNight: SleepNight) : DataItem(){
+        override val id = sleepNight.nightId
+    }
+    object Header: DataItem(){
+        override val id = Long.MIN_VALUE
+    }
+
+    abstract val id: Long
+}
 
 
 

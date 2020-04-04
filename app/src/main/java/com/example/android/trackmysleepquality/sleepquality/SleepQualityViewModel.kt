@@ -28,9 +28,9 @@ class SleepQualityViewModel(
         private val sleepNightKey: Long = 0L
         , val databaseDao: SleepDatabaseDao): ViewModel() {
 
-    private val sleepQuality_viewModel_Job = Job()          /** Job for Coroutines */
+    private val sleepQualityViewModelJob = Job()          /** Job for Coroutines */
 
-    private val uiScope_SleepQuality = CoroutineScope(Dispatchers.Main + sleepQuality_viewModel_Job)
+    private val uiScope_SleepQuality = CoroutineScope(Dispatchers.Main + sleepQualityViewModelJob)
     private val _navigateToSleepTracker_Fragment = MutableLiveData<Boolean?>()
     val navigateToSleepTracker_Fragment: LiveData<Boolean?>
         get() = _navigateToSleepTracker_Fragment
@@ -54,7 +54,7 @@ class SleepQualityViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        sleepQuality_viewModel_Job.cancel()         // cancelling
+        sleepQualityViewModelJob.cancel()         // cancelling
     }
 
 }

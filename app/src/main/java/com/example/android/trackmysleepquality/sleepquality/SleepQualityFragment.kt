@@ -59,7 +59,7 @@ class SleepQualityFragment : Fragment() {
         viewModelQualityFactory = SleepQualityViewModelFactory(arguments, dataSource)
         sleepQualityViewModel = ViewModelProvider(this, viewModelQualityFactory)
                 .get(SleepQualityViewModel::class.java)
-        bindingQuality.sleepQualityViewModelView = sleepQualityViewModel
+        bindingQuality.sleepQualityViewModelV = sleepQualityViewModel
 
         // TODO: Call binding.setLifecycleOwner to make the data binding lifecycle aware:
 //        bindingQuality.lifecycleOwner = this.viewLifecycleOwner   /** 'above Line' */

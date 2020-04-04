@@ -22,11 +22,11 @@ apply plugin: 'androidx.navigation.safeargs'
 apply plugin: "com.squareup.sqldelight"
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.example.android.trackmysleepquality"
         minSdkVersion 19
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -43,6 +43,10 @@ android {
     dataBinding {
         enabled = true
     }
+    compileOptions {
+        targetCompatibility = 1.8
+    }
+    buildToolsVersion = '29.0.2'
 
 }
 
@@ -58,8 +62,10 @@ dependencies {
 
     // Room and Lifecycle dependencies
     implementation "androidx.room:room-runtime:$version_room"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt "androidx.room:room-compiler:$version_room"
-    implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"          // 2.2.0 causes crash when trigger a navigation method "no current navigation node"
+    implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
+    // 2.2.0 causes crash when trigger a navigation method "no current navigation node"
 
 
     // Coroutines
@@ -75,4 +81,3 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
-
