@@ -17,6 +17,7 @@ import com.example.android.trackmysleepquality.databinding.FragmentSleepTrackerB
 import com.example.android.trackmysleepquality.view.SleepNightAdapter
 import com.example.android.trackmysleepquality.view.SleepNightListener
 import com.google.android.material.snackbar.Snackbar
+import java.util.*
 
 class SleepTrackerFragment : Fragment() {
     /**
@@ -45,6 +46,17 @@ class SleepTrackerFragment : Fragment() {
 
         /** Define GridLayoutManager */
         val gridManager =  GridLayoutManager(activity, 3)
+        gridManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
+            override fun getSpanSize(position: Int): Int {
+//                TODO("Not yet implemented")
+                return when (position) {
+                    0 -> 3
+                    else -> 1
+                }
+
+            }
+
+        }
         binding.sleepList.layoutManager = gridManager
 
         sleepTrackerViewModel.nights.observe(this.viewLifecycleOwner, Observer {

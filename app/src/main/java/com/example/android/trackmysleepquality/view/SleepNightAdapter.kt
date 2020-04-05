@@ -25,8 +25,8 @@ private val ITEM_VIEW_TYPE_ITEM = 1
 
 class SleepNightAdapter(val clickListener: SleepNightListener) : ListAdapter<DataItem,
         RecyclerView.ViewHolder>(SleepNightDiffCallback()) {
-    private val adapterScope = CoroutineScope(Dispatchers.Default)
 
+    private val adapterScope = CoroutineScope(Dispatchers.Default)
     fun addHeaderAndSubmitList(list: List<SleepNight>?) {
         adapterScope.launch {
             val items = when (list) {
@@ -41,14 +41,14 @@ class SleepNightAdapter(val clickListener: SleepNightListener) : ListAdapter<Dat
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ITEM_VIEW_TYPE_HEADER -> TextViewHolder.from(parent)
-            ITEM_VIEW_TYPE_ITEM -> ViewHolderReg.from(parent)
+            ITEM_VIEW_TYPE_ITEM -> ViewHolder_.from(parent)
             else -> throw ClassCastException("Unknown viewType ${viewType}")
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is ViewHolderReg -> {
+            is ViewHolder_ -> {
                 val nightItem = getItem(position) as DataItem.SleepNightItem
 //                holder.bind(nightItem.sleepNight, clickListener)
                 holder.bind(clickListener, nightItem.sleepNight)
@@ -72,23 +72,22 @@ class SleepNightAdapter(val clickListener: SleepNightListener) : ListAdapter<Dat
             }
         }
     }
-}
 
-class ViewHolderReg private constructor(val binding: ListItemViewBinding)
-    : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder_ private constructor(val binding: ListItemViewBinding)
+        : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(clickListener: SleepNightListener, item: SleepNight) {
-        binding.sleepAdapterV = item
-        binding.clickListenerViewXML = clickListener
-        binding.executePendingBindings()
-    }
+        fun bind(clickListener: SleepNightListener, item: SleepNight) {
+            binding.sleepAdapterV = item
+            binding.clickListenerViewXML = clickListener
+            binding.executePendingBindings()
+        }
 
-    companion object {
-        fun from(parent: ViewGroup): ViewHolderReg {
-            val layoutInflater = LayoutInflater.from(parent.context)
-            val binding = ListItemViewBinding.inflate(layoutInflater, parent, false)
-
-            return ViewHolderReg(binding)
+        companion object {
+            fun from(parent: ViewGroup): ViewHolder_ {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = ListItemViewBinding.inflate(layoutInflater, parent, false)
+                return ViewHolder_(binding)
+            }
         }
     }
 
@@ -109,7 +108,3 @@ sealed class DataItem {
     }
     abstract val id: Long
 }
-
-
-
-
