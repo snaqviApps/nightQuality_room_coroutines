@@ -7,63 +7,109 @@ package com.example.android.trackmysleepquality.view
  */
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.android.trackmysleepquality.R
 import com.example.android.trackmysleepquality.database.SleepNight
 import com.example.android.trackmysleepquality.databinding.ListItemViewBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-//class SleepNightAdapter: ListAdapter<SleepNight, SleepNightAdapter.ListViewHolder>(SleepNightDiffCallback()) {        // added 'clickListener' to Adapter's constructor
-class SleepNightAdapter(
-        val clickListener: SleepNightListener): ListAdapter<SleepNight, SleepNightAdapter.ListViewHolder>(SleepNightDiffCallback()) {
+private val ITEM_VIEW_TYPE_HEADER = 0
+private val ITEM_VIEW_TYPE_ITEM = 1
 
-    override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        holder.bind(getItem(position)!!, clickListener)
-    }
+class SleepNightAdapter(val clickListener: SleepNightListener) : ListAdapter<DataItem,
+        RecyclerView.ViewHolder>(SleepNightDiffCallback()) {
+    private val adapterScope = CoroutineScope(Dispatchers.Default)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
-        return ListViewHolder.from(parent)
-    }
-
-    /** below added key-word 'private constructor' so it could only be accessed via Companion Object */
-    class ListViewHolder private constructor(val bindingVH: ListItemViewBinding): RecyclerView.ViewHolder(bindingVH.root) {
-        fun bind(item: SleepNight, clickListener: SleepNightListener) {
-
-            bindingVH.sleepAdapterXML = item                    // dataBinding variable in list_item_view.xml
-            bindingVH.clickListenerViewXML = clickListener      // added binding the onClick-Callback to all ViewHolders from adatper-constructor
-            bindingVH.executePendingBindings()                  // expedite the binding
+    fun addHeaderAndSubmitList(list: List<SleepNight>?) {
+        adapterScope.launch {
+            val items = when (list) {
+                null -> listOf(DataItem.Header)
+                else -> listOf(DataItem.Header) + list.map { DataItem.SleepNightItem(it) }
+            }
+            withContext(Dispatchers.Main) {
+                submitList(items) }
         }
+    }
 
-        /** to create factory-pattern
-         * private contstructor is needed in ListViewHolder declaration
-         **/
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            ITEM_VIEW_TYPE_HEADER -> TextViewHolder.from(parent)
+            ITEM_VIEW_TYPE_ITEM -> ViewHolderReg.from(parent)
+            else -> throw ClassCastException("Unknown viewType ${viewType}")
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is ViewHolderReg -> {
+                val nightItem = getItem(position) as DataItem.SleepNightItem
+//                holder.bind(nightItem.sleepNight, clickListener)
+                holder.bind(clickListener, nightItem.sleepNight)
+            }
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return when (getItem(position)) {
+            is DataItem.Header -> ITEM_VIEW_TYPE_HEADER
+            is DataItem.SleepNightItem -> ITEM_VIEW_TYPE_ITEM
+        }
+    }
+
+    class TextViewHolder(view: View): RecyclerView.ViewHolder(view) {
         companion object {
-            fun from(parent: ViewGroup): ListViewHolder {
+            fun from(parent: ViewGroup): TextViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val lViewBinding = ListItemViewBinding.inflate(layoutInflater, parent, false)
-                return ListViewHolder(lViewBinding)         // used 'intention-menu' to change 'itemView-type' to ListItemViewBinding
+                val view = layoutInflater.inflate(R.layout.header, parent, false)
+                return TextViewHolder(view)
             }
         }
     }
 }
 
-class SleepNightListener(val clickListener: (sleepId: Long) -> Unit){
+class ViewHolderReg private constructor(val binding: ListItemViewBinding)
+    : RecyclerView.ViewHolder(binding.root) {
+
+    fun bind(clickListener: SleepNightListener, item: SleepNight) {
+        binding.sleepAdapterV = item
+        binding.clickListenerViewXML = clickListener
+        binding.executePendingBindings()
+    }
+
+    companion object {
+        fun from(parent: ViewGroup): ViewHolderReg {
+            val layoutInflater = LayoutInflater.from(parent.context)
+            val binding = ListItemViewBinding.inflate(layoutInflater, parent, false)
+
+            return ViewHolderReg(binding)
+        }
+    }
+
+}
+
+class SleepNightListener(val clickListener: (sleepId: Long) -> Unit) {
     fun onClick(night: SleepNight) {
         return clickListener(night.nightId)
     }
 }
 
-sealed class DataItem{
-    data class SleepNightItem(val sleepNight: SleepNight) : DataItem(){
+sealed class DataItem {
+    data class SleepNightItem(val sleepNight: SleepNight) : DataItem() {
         override val id = sleepNight.nightId
     }
-    object Header: DataItem(){
+    object Header: DataItem() {
         override val id = Long.MIN_VALUE
     }
-
     abstract val id: Long
 }
+
 
 
 

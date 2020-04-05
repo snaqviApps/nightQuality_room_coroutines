@@ -9,7 +9,7 @@
          click handlers, and state variables. -->
     <data>
         <variable
-            name="sleepTrackerViewModelXML"
+            name="sleepTrackerViewModelV"
             type="com.example.android.trackmysleepquality.sleeptracker.SleepTrackerViewModel" />
     </data>
 
@@ -29,8 +29,8 @@
             app:layout_constraintEnd_toStartOf="@+id/stop_button"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
-            android:enabled="@{sleepTrackerViewModelXML.startButtonVisible}"
-            android:onClick="@{()->sleepTrackerViewModelXML.onStartTracking()}"
+            android:enabled="@{sleepTrackerViewModelV.startButtonVisible}"
+            android:onClick="@{()->sleepTrackerViewModelV.onStartTracking()}"
             />
 
         <Button
@@ -44,8 +44,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/start_button"
             app:layout_constraintTop_toTopOf="parent"
-            android:enabled="@{sleepTrackerViewModelXML.stopButtonVisible}"
-            android:onClick="@{()->sleepTrackerViewModelXML.onStopTracking()}"
+            android:enabled="@{sleepTrackerViewModelV.stopButtonVisible}"
+            android:onClick="@{()->sleepTrackerViewModelV.onStopTracking()}"
             />
 
         <Button
@@ -60,8 +60,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:enabled="@{sleepTrackerViewModelXML.clearButtonVisible}"
-            android:onClick="@{()->sleepTrackerViewModelXML.onClear()}"
+            android:enabled="@{sleepTrackerViewModelV.clearButtonVisible}"
+            android:onClick="@{()->sleepTrackerViewModelV.onClear()}"
             />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -73,7 +73,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/stop_button"/>
         <!--    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                Removed LinearLayout Manager to move GridLayout -->
+                Removed LinearLayout Manager when moved to GridLayout -->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
